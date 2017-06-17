@@ -1,0 +1,32 @@
+version: "3"
+services:
+  mjpeg:
+    networks:
+      - proxy
+    deploy:
+      replicas: 2
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.serviceDomain=mjpeg.p.cns.me
+        - com.df.port.1=3000
+        - com.df.servicePath.1=/
+        - com.df.redirectWhenHttpProto=true
+        - com.df.xForwardedProto=true
+      restart_policy:
+        condition: any
+        delay: 5s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: pause
+        monitor: 60s
+        max_failure_ratio: 0.3
+    image: pinked/mjpeg-proxy
+    environment:
+      - CAM_1=${CAM_1}
+      - CAM_2=${CAM_2}
+
+networks:
+  proxy:
+    external: true
