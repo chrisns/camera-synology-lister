@@ -1,8 +1,5 @@
 FROM node:alpine
 
-RUN apk update && \
-    apk add make python g++
-
 RUN mkdir /app
 WORKDIR /app
 COPY package.json .
