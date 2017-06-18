@@ -7,7 +7,8 @@ app.use(cors())
 
 const {SYNOLOGY_IP, SYNOLOGY_PORT, SYNOLOGY_USER, SYNOLOGY_PASS} = process.env;
 
-var session_id;
+var session_id
+var cams
 
 const authenticate = () => request(`http://${SYNOLOGY_IP}:${SYNOLOGY_PORT}/webapi/auth.cgi?api=SYNO.API.Auth&method=Login&version=3&account=${SYNOLOGY_USER}&passwd=${SYNOLOGY_PASS}&session=SurveillanceStation&format=sid`)
   .then(JSON.parse)
@@ -21,12 +22,14 @@ const get_cameras = () => request(`http://${SYNOLOGY_IP}:${SYNOLOGY_PORT}/webapi
 
 const get_feed_urls = () => _.map(cameras, camera => `http://${SYNOLOGY_IP}:${SYNOLOGY_PORT}/webapi/SurveillanceStation/videoStreaming.cgi?api=SYNO.SurveillanceStation.VideoStream&version=1&method=Stream&cameraId=${camera.id}&format=mjpeg&_sid=${session_id}`)
 
+authenticate()
+  .then(get_cameras)
+  .then(get_feed_urls)
+  .tap(console.info)
+  .then(urls => cams = urls)
+
 app.get('/', (req, res) =>
-  authenticate()
-    .then(get_cameras)
-    .then(get_feed_urls)
-    .tap(console.info)
-    .then(urls => res.json(urls))
+  res.json(cams)
 )
 
 app.listen(3000)
