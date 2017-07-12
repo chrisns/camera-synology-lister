@@ -11,6 +11,7 @@ services:
         - com.df.serviceDomain=cameras.p.cns.me
         - com.df.port=3000
         - com.df.servicePath=/
+        - com.df.httpsOnly=true
         - com.df.redirectWhenHttpProto=true
         - com.df.xForwardedProto=true
       restart_policy:
