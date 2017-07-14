@@ -1,22 +1,13 @@
 pipeline:
 
-#  test:
-#    image: node:alpine
-#    commands:
-#      - npm install -s
-#      - npm test
-
-  build:
-    image: docker:dind
-    commands:
-      - docker build -t pinked/camera-synology-lister:latest .
-      - docker login -u="chrisns" -p=${DOCKER_PASSWORD}
-      - docker push pinked/camera-synology-lister:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  docker:
+    image: plugins/docker
+    repo: pinked/camera-synology-lister
+    secrets: [ docker_username, docker_password ]
 
   deploy:
     image: docker
+    secrets: [ SYNOLOGY_USER, SYNOLOGY_PASS, SYNOLOGY_IP, SYNOLOGY_PORT ]
     commands:
       - docker deploy --compose-file docker-compose.yml cameras
     volumes:
