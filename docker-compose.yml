@@ -3,6 +3,7 @@ services:
   cams:
     networks:
       - proxy
+    read_only: true
     deploy:
       replicas: 2
       labels:
