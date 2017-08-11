@@ -5,7 +5,7 @@ pipeline:
     repo: pinked/camera-synology-lister
     tags:
       - latest
-      - "{{DRONE_BUILD_NUMBER}}"
+      - ${DRONE_BUILD_NUMBER}
     secrets: [ docker_username, docker_password ]
 
   deploy:
