@@ -27,8 +27,7 @@ services:
     environment:
       - SYNOLOGY_USER=${SYNOLOGY_USER}
       - SYNOLOGY_PASS=${SYNOLOGY_PASS}
-      - SYNOLOGY_IP=${SYNOLOGY_IP}
-      - SYNOLOGY_PORT=${SYNOLOGY_PORT}
+      - SYNOLOGY_HOST=${SYNOLOGY_HOST}
 
 networks:
   proxy:
